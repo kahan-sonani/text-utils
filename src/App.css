@@ -1,5 +1,12 @@
 .App {
-  text-align: center;
+  text-align: start;
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
 }
 
 .App-logo {
@@ -11,6 +18,10 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.resize-none {
+  resize: none;
 }
 
 .App-header {
@@ -32,6 +43,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

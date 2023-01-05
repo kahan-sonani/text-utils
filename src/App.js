@@ -1,24 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
 
+import { useState } from 'react';
+import './App.css';
+import Alert from './components/Alert';
+
+import NavBar from './components/Navbar';
+import { TextForm } from './components/TextForm';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import About from './components/About';
+
+const darkStyle = {
+  color: 'white',
+  backgroundColor: '#2C3333'
+}
+
+const lightStyle = {
+  color: 'black',
+  backgroundColor: 'white'
+}
+
+const light = "light"
+const dark = "dark"
 function App() {
+  const [mode, setMode] = useState(light)
+  const [textMode, setTextMode] = useState(dark)
+  const [style, setStyle] = useState(lightStyle)
+  const [alert, setAlert] = useState(null)
+
+  const onCopyToClipboardClicked = (message) => {
+    setAlert(message)
+  }
+  const onCloseAlertClicked = () => {
+    setAlert(null)
+  }
+
+  const toggleMode = () => {
+    if (mode === light) {
+      setMode(dark)
+      setTextMode(light)
+      setStyle(darkStyle)
+    }
+    else {
+      setMode(light)
+      setTextMode(dark)
+      setStyle(lightStyle)
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App" style={style}>
+        <NavBar title="TextUtils" mode={mode} toggleMode={toggleMode} textMode={textMode}></NavBar>
+        <Alert onCloseAlertClicked={onCloseAlertClicked} alert={alert}></Alert>
+        <Routes>
+          <Route exact path='/about' element={<About />} />
+          <Route exact path='/' element={<div className="container my-5">
+            <TextForm onCopyToClipboardClicked={onCopyToClipboardClicked} textMode={textMode} mode={mode} heading="Enter text here"></TextForm>
+          </div>}>
+          </Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
