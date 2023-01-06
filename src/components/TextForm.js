@@ -9,7 +9,7 @@ export const TextForm = (props) => {
     }
 
     const handleSentenceCaseClick = () => {
-        let newText = text.toLowerCase().split(' ').map(function (word) {
+        let newText = text.toLowerCase().split(/\s+/).map(function (word) {
             return (word.charAt(0).toUpperCase() + word.slice(1));
         }).join(' ');
         setText(newText);
@@ -35,10 +35,10 @@ export const TextForm = (props) => {
     }
 
     const printMinutesRead = () => {
-        let strings = text.split(' ')
-        let result = 0.008 * strings.length
+        let strings = text.split(/\s+/)
+        let result = 0.016 * strings.length
         if (result < 1)
-            return `${parseInt(0.48 * strings.length)} seconds read`
+            return `${parseInt(0.96 * strings.length)} seconds read`
         else
             return `${parseInt(result)} minutes read`
     }
@@ -56,27 +56,28 @@ export const TextForm = (props) => {
                 </div>
             </div>
             <div className='d-flex flex-wrap'>
-                <button className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleUppercaseClick}>Convert: Upper Case</button>
-                <button className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleLowercaseClick}>Convert: Lower Case</button>
-                <button className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleSentenceCaseClick}>Convert: Sentence Case</button>
-                <button className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={() => handleCopyToClipboard(props)}>Copy to Clipboard</button>
-                <button className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={() => setText('')}>Clear Text</button>
+                <button disabled={text.length === 0} className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleUppercaseClick}>Convert: Upper Case</button>
+                <button disabled={text.length === 0} className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleLowercaseClick}>Convert: Lower Case</button>
+                <button disabled={text.length === 0} className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={handleSentenceCaseClick}>Convert: Sentence Case</button>
+                <button disabled={text.length === 0} className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={() => handleCopyToClipboard(props)}>Copy to Clipboard</button>
+                <button disabled={text.length === 0} className={`btn btn-${props.textMode} mx-3 mb-3 flex-fill`} onClick={() => setText('')}>Clear Text</button>
             </div>
-            <div className='d-flex flex-wrap flex-row'>
-                <div className={`card flex-grow-2 my-3 mx-3 bg-${props.mode}`}>
-                    <div className=" card-body">
-                        <h3>Your Text Summary</h3>
-                        <p>{text === "" ? 0 : text.split(' ').length} words and {text.length} characters</p>
-                        <p>{printMinutesRead()}</p>
-                    </div>
-                </div>
-
-                <div className={`card my-3 mx-3 flex-grow-1 bg-${props.mode}`}>
+            <div className='d-flex flex-wrap flex-row mx-2'>
+                <div className={`card flex-grow-1 mx-2 my-2 bg-${props.mode}`}>
                     <div className=" card-body">
                         <h3>Preview</h3>
                         <p>{text}</p>
                     </div>
                 </div>
+
+                <div className={`card flex-grow-2 mx-2 my-2 bg-${props.mode}`}>
+                    <div className=" card-body">
+                        <h3>Your Text Summary</h3>
+                        <p>{text === "" ? 0 : text.split(/\s+/).length} words and {text.length} characters</p>
+                        <p>{printMinutesRead()}</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     )

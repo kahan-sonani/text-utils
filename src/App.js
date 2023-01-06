@@ -2,9 +2,14 @@
 import { useState } from 'react';
 import './App.css';
 import Alert from './components/Alert';
-
+import About from './components/About';
 import NavBar from './components/Navbar';
 import { TextForm } from './components/TextForm';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 const darkStyle = {
   color: 'white',
@@ -44,13 +49,21 @@ function App() {
     }
   }
   return (
-    <div className="App" style={style}>
-      <NavBar title="TextUtils" mode={mode} toggleMode={toggleMode} textMode={textMode}></NavBar>
-      <Alert onCloseAlertClicked={onCloseAlertClicked} alert={alert}></Alert>
-      <div className="container my-5">
-        <TextForm onCopyToClipboardClicked={onCopyToClipboardClicked} textMode={textMode} mode={mode} heading="Enter text here"></TextForm>
+    <Router>
+      <div className="App" style={style}>
+        <NavBar title="TextUtils" mode={mode} toggleMode={toggleMode} textMode={textMode}></NavBar>
+        <Alert onCloseAlertClicked={onCloseAlertClicked} alert={alert}></Alert>
+        <Routes>
+          <Route exact path='/' element={<div className="container my-5">
+            <TextForm onCopyToClipboardClicked={onCopyToClipboardClicked} textMode={textMode} mode={mode} heading="Enter text here"></TextForm>
+          </div>}></Route>
+          <Route exact path='/about' element={<About />} />
+          <Route exact path='/text-utils' element={<div className="container my-5">
+            <TextForm onCopyToClipboardClicked={onCopyToClipboardClicked} textMode={textMode} mode={mode} heading="Enter text here"></TextForm>
+          </div>}></Route>
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
